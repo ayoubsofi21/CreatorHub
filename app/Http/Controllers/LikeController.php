@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Like;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\LikeRequest;
 class LikeController extends Controller
 {
-    public function toggleLike(Request $request, $realisationId)
+    public function toggleLike(LikeRequest $request, $realisationId)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id'
-        ]);
-
-        $userId = $request->user_id;
+        $validated = $request->validated(); 
+        $userId = $validated['user_id'];
         $like = Like::where('user_id', $userId)
                     ->where('realisation_id', $realisationId)
                     ->first();
