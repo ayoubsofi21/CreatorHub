@@ -18,10 +18,14 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    public function workspaces()
+    {
+        return $this->hasMany(workspace::class);
+    }
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
