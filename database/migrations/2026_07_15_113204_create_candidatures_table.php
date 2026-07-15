@@ -13,7 +13,29 @@ return new class extends Migration
     {
         Schema::create('candidatures', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('offer_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->text('message')->nullable();
+
+            $table->enum('status', [
+                'pending',
+                'accepted',
+                'rejected'
+            ])->default('pending');
+
             $table->timestamps();
+
+            $table->unique([
+                'offer_id',
+                'user_id'
+            ]);
         });
     }
 
