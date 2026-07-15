@@ -11,8 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('offers', function (Blueprint $table) {
+       Schema::create('offers', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('title');
+
+            $table->text('description');
+
+            $table->decimal('budget', 10, 2);
+
+            $table->enum('status', [
+                'open',
+                'closed'
+            ])->default('open');
+
+            $table->date('deadline')->nullable();
+
             $table->timestamps();
         });
     }

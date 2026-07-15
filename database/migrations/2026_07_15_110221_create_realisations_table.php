@@ -13,6 +13,22 @@ return new class extends Migration
     {
         Schema::create('realisations', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('title');
+            $table->text('description');
+
+            $table->string('media_url');
+
+            $table->enum('media_type', [
+                'image',
+                'youtube',
+                'vimeo'
+            ]);
+
             $table->timestamps();
         });
     }
