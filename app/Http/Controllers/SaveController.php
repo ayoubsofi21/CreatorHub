@@ -7,59 +7,28 @@ use Illuminate\Http\Request;
 
 class SaveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+   public function toggleSave(Request $request, $realisationId)
     {
-        //
-    }
+        $request->validate([
+            'user_id' => 'required|exists:users,id'
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $userId = $request->user_id;
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $save = Save::where('user_id', $userId)
+                    ->where('realisation_id', $realisationId)
+                    ->first();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Save $save)
-    {
-        //
-    }
+        if ($save) {
+            $save->delete(); // Unsave
+            return response()->json(['message' => 'Realisation unsaved successfully!'], 200);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Save $save)
-    {
-        //
-    }
+        Save::create([
+            'user_id' => $userId,
+            'realisation_id' => $realisationId
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Save $save)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Save $save)
-    {
-        //
+        return response()->json(['message' => 'Realisation saved successfully!'], 201);
     }
 }
