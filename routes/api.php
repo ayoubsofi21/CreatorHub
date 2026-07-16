@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WorkShopeController;
+use App\Http\Controllers\workspaceController;
+use App\Http\Controllers\TaskController;
 
 
 Route::apiResource('users', UserController::class);
-Route::apiResource('workspaces', WorkShopeController::class);
-Route::apiResource('message', TestController::class);
+Route::apiResource('workspaces', WorkspaceController::class);
+Route::post('/workspaces/{workspace}/invite', [WorkspaceController::class, 'invite']);
+Route::get('/workspaces/{workspace}/members', [WorkspaceController::class, 'members']);
+Route::apiResource('tasks', TaskController::class);

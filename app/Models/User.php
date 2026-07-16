@@ -18,10 +18,10 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    public function workspaces()
-    {
-        return $this->hasMany(workspace::class);
-    }
+public function workspaces()
+{
+    return $this->belongsToMany(Workspace::class, 'workspace_user');
+}
     protected $fillable = [
         'name',
         'email',

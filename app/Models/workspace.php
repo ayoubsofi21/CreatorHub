@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class workspace extends Model
+class Workspace extends Model
 {
     protected $fillable = [
-        'title',
+        'name',
         'description',
         'user_id'
     ];
@@ -16,4 +16,12 @@ class workspace extends Model
     {
         return $this->belongsTo(User::class);
     }
+public function members()
+{
+    return $this->belongsToMany(User::class, 'workspace_user');
+}
+public function columns()
+{
+    return $this->hasMany(Column::class);
+}
 }
