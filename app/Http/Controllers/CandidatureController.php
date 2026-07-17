@@ -48,14 +48,21 @@ class CandidatureController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Application accepted successfully.',
+                'message' => 'candidature accepted successfully.',
                 'application' => $application
             ]);
         }
-    public function index()
-    {
-        //
-    }
+    public function reject(Candidature $application)
+        {
+            $application->update([
+                'status' => 'rejected'
+            ]);
+
+            return response()->json([
+                'message' => 'Application rejected successfully.',
+                'application' => $application
+            ]);
+        }
 
     /**
      * Show the form for creating a new resource.
