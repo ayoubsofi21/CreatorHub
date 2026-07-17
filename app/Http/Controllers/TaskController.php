@@ -10,17 +10,11 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($workspaceId)
     {
-        //
-    }
+        $tasks = Task::all()->where('workspace_id', $workspaceId);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($tasks);
     }
 
     /**
@@ -28,38 +22,68 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'workspace_id' => 'required|exists:workspaces,id',
+            'assigned_to' => 'required|exists:users,id',
+            'delivery_url' => 'nullable|string',
+            'due_date' => 'nullable|date',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
-    {
-        //
-    }
+        $task = Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'workspace_id' => $request->workspace_id,
+            'assigned_to' => $request->assigned_to,
+            'delivery_url' => $request->delivery_url,
+            'due_date' => $request->due_date,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
+        return response()->json($task, 201);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $request->validate([
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+            'workspace_id' => 'sometimes|required|exists:workspaces,id',
+            'assigned_to' => 'nullable|exists:users,id',
+        ]);
+        $task->update($request->all());
+
+        return response()->json($task);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $task->delete();
+
+        return response()->json(['message' => 'Task deleted successfully']);
+    }
+
+    public function changeStatus(Request $request, Task $task)
+    {
+        $request->validate([
+            'status' => 'required|in:todo,in_progress,review,done',
+        ]);
+
+        $task->update([
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'message' => 'Task status updated successfully',
+            'task' => $task,
+        ]);
     }
 }

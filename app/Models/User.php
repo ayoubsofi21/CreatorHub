@@ -14,6 +14,11 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function workspaces()
+    {
+        return $this->belongsToMany(Workspace::class, 'workspace_user');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
