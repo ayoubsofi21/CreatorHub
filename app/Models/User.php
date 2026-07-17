@@ -7,25 +7,31 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
+
+    public function workspaces()
+    {
+        return $this->belongsToMany(Workspace::class, 'workspace_user');
+    }
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-public function workspaces()
-{
-    return $this->belongsToMany(Workspace::class, 'workspace_user');
-}
     protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'role',
+        'avatar',
+        'bio',
+        'price_per_hour',
     ];
 
     /**
@@ -39,7 +45,7 @@ public function workspaces()
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -49,5 +55,35 @@ public function workspaces()
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function realisations()
+    {
+        return $this->hasMany(Realisation::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function saves()
+    {
+        return $this->hasMany(Save::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    public function candidatures()
+    {
+        return $this->hasMany(Candidature::class);
     }
 }

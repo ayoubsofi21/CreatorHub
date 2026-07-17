@@ -6,26 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    public function workspace()
-{
-    return $this->belongsTo(Workspace::class);
-}
-protected $fillable = [
-    'title',
-    'description',
-    'workspace_id',
-    'assigned_to',
-    'delivery_url',
-    'status',
-    'due_date'
-];
-public function column()
-{
-    return $this->belongsTo(Column::class);
-}
+    protected $fillable = [
+        'title',
+        'description',
+        'workspace_id',
+        'assigned_to',
+        'delivery_url',
+        'status',
+        'due_date',
+    ];
 
-public function assignedUser()
-{
-    return $this->belongsTo(User::class,'assigned_to');
-}
+    public function workspace()
+    {
+        return $this->belongsTo(Workspace::class);
+    }
+
+    public function column()
+    {
+        return $this->belongsTo(Column::class);
+    }
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
 }

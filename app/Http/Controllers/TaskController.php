@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -13,34 +13,35 @@ class TaskController extends Controller
     public function index($workspaceId)
     {
         $tasks = Task::all()->where('workspace_id', $workspaceId);
+
         return response()->json($tasks);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-   public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'workspace_id' => 'required|exists:workspaces,id',
-        'assigned_to' => 'required|exists:users,id',
-        'delivery_url' => 'nullable|string',
-        'due_date' => 'nullable|date',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'workspace_id' => 'required|exists:workspaces,id',
+            'assigned_to' => 'required|exists:users,id',
+            'delivery_url' => 'nullable|string',
+            'due_date' => 'nullable|date',
+        ]);
 
-    $task = Task::create([
-        'title' => $request->title,
-        'description' => $request->description,
-        'workspace_id' => $request->workspace_id,
-        'assigned_to' => $request->assigned_to,
-        'delivery_url' => $request->delivery_url,
-        'due_date' => $request->due_date,
-    ]);
+        $task = Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'workspace_id' => $request->workspace_id,
+            'assigned_to' => $request->assigned_to,
+            'delivery_url' => $request->delivery_url,
+            'due_date' => $request->due_date,
+        ]);
 
-    return response()->json($task, 201);
-}
+        return response()->json($task, 201);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -55,6 +56,7 @@ class TaskController extends Controller
             'assigned_to' => 'nullable|exists:users,id',
         ]);
         $task->update($request->all());
+
         return response()->json($task);
     }
 
@@ -65,21 +67,23 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
         $task->delete();
+
         return response()->json(['message' => 'Task deleted successfully']);
     }
+
     public function changeStatus(Request $request, Task $task)
-{
-    $request->validate([
-        'status' => 'required|in:todo,in_progress,review,done'
-    ]);
+    {
+        $request->validate([
+            'status' => 'required|in:todo,in_progress,review,done',
+        ]);
 
-    $task->update([
-        'status' => $request->status
-    ]);
+        $task->update([
+            'status' => $request->status,
+        ]);
 
-    return response()->json([
-        'message' => 'Task status updated successfully',
-        'task' => $task
-    ]);
-}
+        return response()->json([
+            'message' => 'Task status updated successfully',
+            'task' => $task,
+        ]);
+    }
 }

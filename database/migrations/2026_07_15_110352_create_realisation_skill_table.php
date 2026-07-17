@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('realisation_skill', function (Blueprint $table) {
+        Schema::create('realisation_skill', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('realisation_id')
@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->unique([
                 'realisation_id',
-                'skill_id'
+                'skill_id',
             ]);
         });
     }
