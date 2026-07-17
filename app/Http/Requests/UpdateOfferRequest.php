@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+// use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOfferRequest extends FormRequest
@@ -12,7 +12,7 @@ class UpdateOfferRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,13 @@ class UpdateOfferRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+         return [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'budget' => 'required|numeric|min:0',
+            'deadline' => 'nullable|date',
+            'skills' => 'required|array',
+            'skills.*' => 'exists:skills,id',
         ];
     }
 }

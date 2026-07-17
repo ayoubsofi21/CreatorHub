@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ApplyOfferRequest extends FormRequest
+class SaveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class ApplyOfferRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
-                'message' => 'nullable|string|max:1000',
-            ];
+        return [
+            'user_id' => 'required|exists:users,id'
+        ];
     }
 }

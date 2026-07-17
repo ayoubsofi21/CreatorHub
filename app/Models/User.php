@@ -52,10 +52,6 @@ class User extends Authenticatable
         ];
     }
 
-    // ===========================
-    // Relations
-    // ===========================
-
     public function realisations()
     {
         return $this->hasMany(Realisation::class);
@@ -74,5 +70,15 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    public function candidatures()
+    {
+        return $this->hasMany(Candidature::class);
     }
 }

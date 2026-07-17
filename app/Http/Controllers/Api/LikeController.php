@@ -1,66 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LikeRequest;
 use App\Models\Like;
-use Illuminate\Http\Request;
-use App\Models\Realisation;
-use Illuminate\Support\Facades\Auth;
+
 class LikeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function toggleLike(LikeRequest $request, $realisationId)
     {
-        //
-    }
+        $validated = $request->validated();
+        $userId = $validated['user_id'];
 
-    /**
-     * Show the form for creating a new resource.
-     */
-public function create(Realisation $realisation)
-{
+        $like = Like::where('user_id', $userId)
+            ->where('realisation_id', $realisationId)
+            ->first();
 
+        if ($like) {
+            $like->delete();
 
-}
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            return response()->json(['message' => 'Like removed successfully!'], 200);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Like $like)
-    {
-        //
-    }
+        Like::create([
+            'user_id' => $userId,
+            'realisation_id' => $realisationId,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Like $like)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Like $like)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Like $like)
-    {
-        //
+        return response()->json(['message' => 'Realisation liked successfully!'], 201);
     }
 }
