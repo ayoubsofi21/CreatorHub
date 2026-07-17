@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skill extends Model
 {
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+    ];
+
     public function realisations()
     {
         return $this->belongsToMany(Realisation::class);
