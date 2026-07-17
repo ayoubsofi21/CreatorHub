@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
-{
+{   
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -49,5 +49,10 @@ class User extends Authenticatable
     public function offers()
     {
         return $this->hasMany(Offer::class);
+    }
+
+    public function candidatures()
+    {
+        return $this->hasMany(Candidature::class);
     }
 }
