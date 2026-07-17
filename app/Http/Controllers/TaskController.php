@@ -10,9 +10,9 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($workspaceId)
     {
-        $tasks = Task::all();
+        $tasks = Task::all()->where('workspace_id', $workspaceId);
         return response()->json($tasks);
     }
 
@@ -73,4 +73,19 @@ class TaskController extends Controller
         $task->delete();
         return response()->json(['message' => 'Task deleted successfully']);
     }
+    public function changeStatus(Request $request, Task $task)
+{
+    $request->validate([
+        'status' => 'required|in:todo,in_progress,review,done'
+    ]);
+
+    $task->update([
+        'status' => $request->status
+    ]);
+
+    return response()->json([
+        'message' => 'Task status updated successfully',
+        'task' => $task
+    ]);
+}
 }
