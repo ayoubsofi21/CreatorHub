@@ -2,23 +2,27 @@
 
 namespace Database\Factories;
 
-use App\Models\Offer;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Offer>
- */
 class OfferFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+
+            'user_id'=>User::factory(),
+
+            'title'=>fake()->jobTitle(),
+
+            'description'=>fake()->paragraph(),
+
+            'budget'=>fake()->numberBetween(1000,10000),
+
+            'status'=>'open',
+
+            'deadline'=>fake()->dateTimeBetween('now','+1 month')
+
         ];
     }
 }
