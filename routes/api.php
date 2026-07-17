@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\RealisationController;
@@ -8,9 +9,23 @@ use App\Http\Controllers\SaveController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkspaceController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\OfferController;
+use App\Http\Controllers\CandidatureController;
 use Illuminate\Support\Facades\Route;
 
+// Route::apiResource('offers', OfferController::class);
+Route::get('/offers', [OfferController::class, 'index']);
+Route::post('/offers', [OfferController::class, 'store']);
+Route::get('/offers/{offer}', [OfferController::class, 'show']);
+Route::put('/offers/{offer}', [OfferController::class, 'update']);
+Route::delete('/offers/{offer}', [OfferController::class, 'destroy']);
+
+Route::post('/offers/{offer}/apply', [CandidatureController::class, 'apply']);
+
+Route::get('/offers/{offer}/applications', [CandidatureController::class, 'applications']);
+Route::patch('/applications/{application}/accept', [CandidatureController::class, 'accept']);
+
+Route::patch('/applications/{application}/reject', [CandidatureController::class, 'reject']);
 Route::get('/test', function () {
     return response()->json([
         'message' => 'CreatorHub API Working',
