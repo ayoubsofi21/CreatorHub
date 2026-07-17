@@ -13,3 +13,5 @@ Route::post('/realisations/{id}/save', [SaveController::class, 'toggleSave']);
 
 
 Route::get('/realisations/search', [RealisationSearchController::class, 'search']);
+
+
