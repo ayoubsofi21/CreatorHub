@@ -12,7 +12,7 @@ class ApplyOfferRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,8 @@ class ApplyOfferRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+         return [
+                'message' => 'nullable|string|max:1000',
+            ];
     }
 }
