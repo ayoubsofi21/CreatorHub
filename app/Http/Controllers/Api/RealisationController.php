@@ -31,11 +31,9 @@ class RealisationController extends Controller
             'media_url' => $request->media_url,
             'media_type' => $request->media_type,
         ]);
-
         if ($request->has('skills')) {
             $realisation->skills()->sync($request->skills);
         }
-
         return response()->json([
             'message' => 'Realisation created successfully',
             'data' => $realisation->load('skills')
@@ -46,13 +44,9 @@ class RealisationController extends Controller
     public function show(Realisation $realisation)
     {
         return response()->json(
-            $realisation->load([
-                'user',
-                'skills',
-                'likes',
-                'comments',
-                'saves'
-            ])
+            $realisation
+                ->load(['user', 'skills', 'likes', 'comments', 'saves'])
+                ->loadCount(['likes', 'comments', 'saves'])
         );
     }
 
@@ -93,6 +87,3 @@ class RealisationController extends Controller
         ]);
     }
 }
-
-
-
