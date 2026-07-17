@@ -12,6 +12,24 @@ class CandidatureController extends Controller
     /**
      * Display a listing of the resource.
      */
+        public function apply(ApplyOfferRequest $request, Offer $offer)
+            {
+                $candidature = Candidature::create([
+                    'offer_id' => $offer->id,
+
+                    // Later replace with auth()->id()
+                    'user_id' => 2,
+
+                    'message' => $request->message,
+
+                    'status' => 'pending',
+                ]);
+
+                return response()->json([
+                    'message' => 'condidature submitted successfully.',
+                    'application' => $candidature,
+                ], 201);
+            }
     public function index()
     {
         //
@@ -64,18 +82,5 @@ class CandidatureController extends Controller
     {
         //
     }
-    public function apply(ApplyOfferRequest $request, Offer $offer)
-    {
-        $candidature = Candidature::create([
-            'offer_id' => $offer->id,
-            'user_id' => 2, // Replace with auth()->id() later
-            'message' => $request->message,
-            'status' => 'pending',
-        ]);
-
-        return response()->json([
-            'message' => 'Application submitted successfully.',
-            'candidature' => $candidature,
-        ], 201);
-    }
+    
 }
