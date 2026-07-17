@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApplyOfferRequest;
 use App\Models\Candidature;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 
 class CandidatureController extends Controller
@@ -61,5 +63,19 @@ class CandidatureController extends Controller
     public function destroy(Candidature $candidature)
     {
         //
+    }
+    public function apply(ApplyOfferRequest $request, Offer $offer)
+    {
+        $candidature = Candidature::create([
+            'offer_id' => $offer->id,
+            'user_id' => 2, // Replace with auth()->id() later
+            'message' => $request->message,
+            'status' => 'pending',
+        ]);
+
+        return response()->json([
+            'message' => 'Application submitted successfully.',
+            'candidature' => $candidature,
+        ], 201);
     }
 }

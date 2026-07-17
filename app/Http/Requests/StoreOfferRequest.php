@@ -12,7 +12,7 @@ class StoreOfferRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,10 +20,15 @@ class StoreOfferRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+   public function rules(): array
     {
-        return [
-            //
+           return [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'budget' => 'required|numeric|min:0',
+            'deadline' => 'nullable|date',
+            'skills' => 'required|array',
+            'skills.*' => 'exists:skills,id',
         ];
     }
 }
