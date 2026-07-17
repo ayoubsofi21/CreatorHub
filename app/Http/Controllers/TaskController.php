@@ -19,33 +19,28 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'workspace_id' => 'required|exists:workspaces,id',
-            'column_id' => 'required|exists:columns,id',
-            'assigned_to' => 'nullable|exists:users,id',
-        ]);
-        $task = Task::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'workspace_id' => $request->workspace_id,
-            'column_id' => $request->column_id,
-            'assigned_to' => $request->assigned_to,
-        ]);
-        return response()->json($task, 201);
-    }
+   public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'workspace_id' => 'required|exists:workspaces,id',
+        'assigned_to' => 'required|exists:users,id',
+        'delivery_url' => 'nullable|string',
+        'due_date' => 'nullable|date',
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $task = Task::findOrFail($id);
-        return response()->json($task);
-    }
+    $task = Task::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'workspace_id' => $request->workspace_id,
+        'assigned_to' => $request->assigned_to,
+        'delivery_url' => $request->delivery_url,
+        'due_date' => $request->due_date,
+    ]);
+
+    return response()->json($task, 201);
+}
 
     /**
      * Update the specified resource in storage.
@@ -54,10 +49,9 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
         $request->validate([
-            'name' => 'sometimes|required|string|max:255',
+            'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'workspace_id' => 'sometimes|required|exists:workspaces,id',
-            'column_id' => 'sometimes|required|exists:columns,id',
             'assigned_to' => 'nullable|exists:users,id',
         ]);
         $task->update($request->all());

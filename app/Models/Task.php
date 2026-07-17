@@ -10,7 +10,15 @@ class Task extends Model
 {
     return $this->belongsTo(Workspace::class);
 }
-
+protected $fillable = [
+    'title',
+    'description',
+    'workspace_id',
+    'assigned_to',
+    'delivery_url',
+    'status',
+    'due_date'
+];
 public function column()
 {
     return $this->belongsTo(Column::class);
