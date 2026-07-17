@@ -4,62 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Save;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\SaveRequest;
 class SaveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+   public function toggleSave(SaveRequest $request, $realisationId)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Save $save)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Save $save)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Save $save)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Save $save)
-    {
-        //
+        $request->validate([
+            'user_id' => 'required:users,id'
+        ]);
+        $userId = $request->user_id;
+        $save = Save::where('user_id', $userId)
+                    ->where('realisation_id', $realisationId)
+                    ->first();
+        if ($save) {
+            $save->delete(); // Unsave
+            return response()->json(['message' => 'Realisation unsaved successfully!'], 200);
+        }
+        Save::create([
+            'user_id' => $userId,
+            'realisation_id' => $realisationId
+        ]);
+        return response()->json(['message' => 'Realisation saved successfully!'], 201);
     }
 }

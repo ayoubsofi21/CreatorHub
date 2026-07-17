@@ -1,19 +1,17 @@
 <?php
-
-use App\Http\Controllers\Api\OfferController;
-use App\Http\Controllers\CandidatureController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\SaveController;
+use App\Http\Controllers\RealisationSearchController;
 
-// Route::apiResource('offers', OfferController::class);
-Route::get('/offers', [OfferController::class, 'index']);
-Route::post('/offers', [OfferController::class, 'store']);
-Route::get('/offers/{offer}', [OfferController::class, 'show']);
-Route::put('/offers/{offer}', [OfferController::class, 'update']);
-Route::delete('/offers/{offer}', [OfferController::class, 'destroy']);
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+Route::post('/realisations/{id}/like', [LikeController::class, 'toggleLike']);
+Route::post('/realisations/{id}/save', [SaveController::class, 'toggleSave']);
 
-Route::post('/offers/{offer}/apply', [CandidatureController::class, 'apply']);
 
-Route::get('/offers/{offer}/applications', [CandidatureController::class, 'applications']);
-Route::patch('/applications/{application}/accept', [CandidatureController::class, 'accept']);
+Route::get('/realisations/search', [RealisationSearchController::class, 'search']);
 
-Route::patch('/applications/{application}/reject', [CandidatureController::class, 'reject']);
+
