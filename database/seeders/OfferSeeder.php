@@ -2,16 +2,28 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Offer;
+use App\Models\Skill;
 use Illuminate\Database\Seeder;
 
 class OfferSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        Offer::factory(10)
+            ->create()
+            ->each(function($offer){
+
+                $offer->skills()->attach(
+
+                    Skill::inRandomOrder()
+
+                    ->take(rand(2,4))
+
+                    ->pluck('id')
+
+                );
+
+            });
     }
 }
