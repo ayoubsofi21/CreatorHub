@@ -26,5 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('/realisations', RealisationController::class);
-    Route::apiResource('/realisations/{realisation}/likes', LikeController::class)->only(['create']);
 });
+
+
