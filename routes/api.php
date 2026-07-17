@@ -1,12 +1,8 @@
 <?php
 
-// use App\Http\Controllers\OfferController;
-
 use App\Http\Controllers\Api\OfferController;
 use App\Http\Controllers\CandidatureController;
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\Api\OfferController;
-// use App\Http\Controllers\Api\CandidatureController;
 
 // Route::apiResource('offers', OfferController::class);
 Route::get('/offers', [OfferController::class, 'index']);
@@ -18,7 +14,6 @@ Route::delete('/offers/{offer}', [OfferController::class, 'destroy']);
 Route::post('/offers/{offer}/apply', [CandidatureController::class, 'apply']);
 
 Route::get('/offers/{offer}/applications', [CandidatureController::class, 'applications']);
-
 Route::patch('/applications/{application}/accept', [CandidatureController::class, 'accept']);
 
 Route::patch('/applications/{application}/reject', [CandidatureController::class, 'reject']);

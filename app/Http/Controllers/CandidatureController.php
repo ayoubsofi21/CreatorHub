@@ -26,10 +26,32 @@ class CandidatureController extends Controller
                 ]);
 
                 return response()->json([
-                    'message' => 'condidature submitted successfully.',
+                    'message' => 'condidaturea submitted successfully.',
                     'application' => $candidature,
                 ], 201);
             }
+      public function applications(Offer $offer)
+        {
+            $applications = $offer->candidatures()
+                ->with('user')
+                ->get();
+
+            return response()->json([
+                'offer' => $offer->title,
+                'applications' => $applications
+            ]);
+        }
+        public function accept(Candidature $application)
+        {
+            $application->update([
+                'status' => 'accepted'
+            ]);
+
+            return response()->json([
+                'message' => 'Application accepted successfully.',
+                'application' => $application
+            ]);
+        }
     public function index()
     {
         //
