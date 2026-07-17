@@ -55,7 +55,7 @@ class CandidatureController extends Controller
     public function reject(Candidature $application)
         {
             $application->update([
-                'status' => 'rejected'
+                'status'=>'rejected'
             ]);
 
             return response()->json([
